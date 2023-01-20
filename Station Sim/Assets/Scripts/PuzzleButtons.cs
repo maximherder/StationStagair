@@ -6,21 +6,15 @@ public class PuzzleButtons : MonoBehaviour
 {
     public GameObject PuzzlePiece;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    //Ik zou lege functies gewoon weghalen.
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    /*
+     * Deze manier van werken is prima wanneer er nog niet al te veel puzzelstukjes zijn en zolang je in je eentje werkt. 
+     * Ik zou later aanraden dit op een flexibelere manier te doen.
+     */
     public void TogglePiece()
     {
-        if (PuzzlePiece.activeInHierarchy == true)
+        if (PuzzlePiece.activeInHierarchy) //Hier zou ik de == true gewoon weglaten.
             PuzzlePiece.SetActive(false);
         else
             PuzzlePiece.SetActive(true);

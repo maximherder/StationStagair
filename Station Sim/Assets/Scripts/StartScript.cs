@@ -11,7 +11,7 @@ public class StartScript : MonoBehaviour
         StartCoroutine(LoadLevel());
     }
 
-    public IEnumerator LoadLevel()
+    public IEnumerator LoadLevel() //Dit is helemaal prima, weet dat je ook functies kunt aanroepen vanuit de animator (ik vind dit overigens beter omdat je die calls niet terugziet in code)
     {
         transition.SetTrigger("Start");
         yield return new WaitForSeconds(1);
