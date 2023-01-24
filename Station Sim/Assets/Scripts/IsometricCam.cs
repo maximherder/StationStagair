@@ -5,56 +5,51 @@ using UnityEngine;
 public class IsometricCam : MonoBehaviour
 {
     public float CamSpeed;
-    public float ScrollSpeed = 5;
-    public float RotationAmount = 0.1f;
-    public Camera ZoomCamObj;
-    public GameObject PanCamObj;
+    public float ScrollSpeed = 20;
 
-    private Vector3 Origin;
-    private Vector3 Difference;
-    private bool drag = false;
-
+    private Vector3 _origin;
+    private Vector3 _difference;
+    private bool _drag = false;
     private Vector3 _startPosition;
     private float _camSize;
-    private Vector3 _input;
-    public Quaternion newRotation;
 
     // Start is called before the first frame update
     void Start()
     {
         _startPosition = new Vector3(-20, 0, -65);
-        newRotation = transform.rotation;
         _camSize = Camera.main.orthographicSize;
     }
 
     // Update is called once per frame
     void Update()
     {
-        PanCam();
-        ZoomCam();
+       // if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+           // PanCam();
+        if (Input.GetAxis("Mouse ScrollWheel") != 0)
+            ZoomCam();
     }
 
     private void LateUpdate()
     {
         if (Input.GetMouseButton(1))
         {
-            Difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - Camera.main.transform.position;
-            if (drag == false)
+            _difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - Camera.main.transform.position;
+            if (_drag == false)
             {
-                drag = true;
-                Origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                _drag = true;
+                _origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             }
         }
         else
         {
-            drag = false;
+            _drag = false;
         }
 
-        if (drag)
+        if (_drag)
         {
-            Vector3 originVector = new Vector3(Origin.x, 0, Origin.z);
-            Vector3 differenceVector = new Vector3(Difference.x, 0, Difference.z);
-            PanCamObj.transform.position = (originVector - differenceVector) - _startPosition;
+            Vector3 originVector = new Vector3(_origin.x, 0, _origin.z);
+            Vector3 differenceVector = new Vector3(_difference.x, 0, _difference.z);
+            this.transform.position = (originVector - differenceVector) - _startPosition;
         }
 
         if (Input.GetKeyDown(KeyCode.R))
@@ -63,35 +58,20 @@ public class IsometricCam : MonoBehaviour
 
     void PanCam()
     {
-        if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
-        {
-            _input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-            PanCamObj.transform.Translate(_input * CamSpeed * Time.deltaTime);
-        }
+        Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+        this.transform.Translate(input * CamSpeed * Time.deltaTime);
     }
 
     void ZoomCam()
     {
-        if (Input.GetAxis("Mouse ScrollWheel") > 0)
-        {
-            if (ZoomCamObj.orthographicSize > 5)
-            {
-                ZoomCamObj.orthographicSize -= ScrollSpeed;
-            }
-        }
-        if (Input.GetAxis("Mouse ScrollWheel") < 0)
-        {
-            if (ZoomCamObj.orthographicSize < 100)
-            {
-                ZoomCamObj.orthographicSize += ScrollSpeed;
-            }
-        }
+        float val = Camera.main.orthographicSize - ScrollSpeed * Input.GetAxisRaw("Mouse ScrollWheel");
+        val = Mathf.Clamp(val, 20, 100);
+        Camera.main.orthographicSize = val;
     }
 
     void ResetCam()
     {
-        newRotation = Quaternion.identity;
-        PanCamObj.transform.position = new Vector3(0, 0, 0);
-        ZoomCamObj.orthographicSize = _camSize;
+        this.transform.position = new Vector3(0, 0, 0);
+        Camera.main.orthographicSize = _camSize;
     }
 }

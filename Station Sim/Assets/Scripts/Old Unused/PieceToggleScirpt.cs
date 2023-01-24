@@ -16,11 +16,6 @@ public class PieceToggleScirpt : MonoBehaviour
         _isActive = true;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
     private void OnMouseDown()
     {
         if (_isActive)
