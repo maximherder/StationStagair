@@ -6,19 +6,13 @@ public class ButtonManager : MonoBehaviour
 {
     private GameObject controlsPanel;
     private bool _controlPanelActive;
-    public List<GameObject> PuzzlePieces;
+
 
     void Awake()
     {
         controlsPanel = GameObject.Find("ControlsPanelExposed");
         controlsPanel.SetActive(false);
         _controlPanelActive = false;
-    }
-
-
-    public void CanBeBuilt()
-    {
-        
     }
 
 
