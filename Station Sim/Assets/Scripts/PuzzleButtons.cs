@@ -4,19 +4,49 @@ using UnityEngine;
 
 public class PuzzleButtons : MonoBehaviour
 {
+    //public List<GameObject> PuzzlePieces;
     public GameObject PuzzlePiece;
+    public GameObject RequiredPiece;
 
-    //Ik zou lege functies gewoon weghalen.
-
-    /*
-     * Deze manier van werken is prima wanneer er nog niet al te veel puzzelstukjes zijn en zolang je in je eentje werkt. 
-     * Ik zou later aanraden dit op een flexibelere manier te doen.
-     */
     public void TogglePiece()
     {
-        if (PuzzlePiece.activeInHierarchy) //Hier zou ik de == true gewoon weglaten.
-            PuzzlePiece.SetActive(false);
+        if (RequiredPiece == null)
+        {
+            Construction();
+        }
+        else if (RequiredPiece.GetComponent<PieceValueScript>().IsComplete)
+        {
+            //building progress function here
+            Construction();
+
+        }
         else
-            PuzzlePiece.SetActive(true);
+        {
+            Debug.Log("Missing Requirement!");
+            //popup here
+            //deduct points here
+        }
+    }
+
+    public void Construction()
+    {
+        //hier zorgen dat die timer begint te lopen, en zodra die voorbij is (coroutine?) de waardes veranderen
+        if (!PuzzlePiece.GetComponent<PieceValueScript>().IsComplete)
+        {
+            if (!PuzzlePiece.GetComponent<PieceValueScript>().IsInProgress)
+            {
+                PuzzlePiece.GetComponent<PieceValueScript>().IsInProgress = true;
+                if (PuzzlePiece.activeInHierarchy)
+                {
+                    PuzzlePiece.SetActive(false);
+                }
+                else
+                {
+                    PuzzlePiece.SetActive(true);
+                }
+                PuzzlePiece.GetComponent<PieceValueScript>().IsComplete = true;
+                PuzzlePiece.GetComponent<PieceValueScript>().IsInProgress = false;
+            }
+        }
     }
 }
