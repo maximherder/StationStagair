@@ -6,5 +6,10 @@ using UnityEngine;
 public class TextScript
 {
     [TextArea(3, 10)]
-    public string[] Sentences;
+    public string[] IntroSentences;
+
+    [TextArea(3, 10)]
+    public string[] PlaySentences;
+
+
 }

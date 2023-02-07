@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class ButtonManager : MonoBehaviour
 {
-    private GameObject controlsPanel;
+    public GameObject controlsPanel;
+    public GameObject _choicePanel;
     private bool _controlPanelActive;
+    private bool _choicePanelActive;
 
 
     void Awake()
     {
-        controlsPanel = GameObject.Find("ControlsPanelExposed");
         controlsPanel.SetActive(false);
         _controlPanelActive = false;
     }
@@ -30,4 +31,17 @@ public class ButtonManager : MonoBehaviour
         }
     }
 
+    public void ToggleChoicePanel()
+    {
+        _choicePanelActive = !_choicePanelActive;
+
+        if (_choicePanelActive)
+        {
+            _choicePanel.SetActive(true);
+        }
+        if (!_controlPanelActive)
+        {
+            _choicePanel.SetActive(false);
+        }
+    }
 }

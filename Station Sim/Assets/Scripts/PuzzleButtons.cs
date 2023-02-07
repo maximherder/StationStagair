@@ -9,11 +9,15 @@ public class PuzzleButtons : MonoBehaviour
     public GameObject RequiredPiece;
     public GameObject ScoreSystem;
     private GameObject _progressBar;
+    public GameObject Cam;
+    private Vector3 _camOffset;
 
 
     private void Start()
     {
         ScoreSystem = GameObject.Find("txtPoints");
+        _camOffset = new Vector3(40, 0, 40);
+        Cam = GameObject.Find("Camera Pivot");
         _progressBar = (GameObject)Resources.Load("CanvasTiny", typeof(GameObject));
     }
 
@@ -56,6 +60,7 @@ public class PuzzleButtons : MonoBehaviour
                 pieceValueScript.IsInProgress = true;
 
                 GameObject realProgressBar = Instantiate(_progressBar, PuzzlePiece.transform.position, Quaternion.identity);
+                Cam.transform.position = PuzzlePiece.transform.position + _camOffset;
                 realProgressBar.GetComponentInChildren<ProgresBarScript>().BuildTime = pieceValueScript.BuildingTime;
             }
         }

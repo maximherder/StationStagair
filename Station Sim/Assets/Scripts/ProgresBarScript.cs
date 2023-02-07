@@ -32,6 +32,7 @@ public class ProgresBarScript : MonoBehaviour
             if (Mask.fillAmount >= 1)
             {
                 _inProgress = false;
+                Destroy(gameObject);
             }
         }
     }
