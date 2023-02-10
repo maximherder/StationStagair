@@ -6,11 +6,12 @@ public class IsometricCam : MonoBehaviour
 {
     public float CamSpeed;
     public float ScrollSpeed = 20;
+    public Vector3 Trans;
 
     private Vector3 _origin;
     private Vector3 _difference;
-    private bool _drag = false;
     private Vector3 _startPosition;
+    private bool _drag = false;
     private float _camSize;
 
     // Start is called before the first frame update
@@ -23,10 +24,9 @@ public class IsometricCam : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       // if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
-           // PanCam();
         if (Input.GetAxis("Mouse ScrollWheel") != 0)
             ZoomCam();
+        transform.position = Vector3.Lerp(transform.position, Trans, 1.0f * Time.deltaTime);
     }
 
     private void LateUpdate()
@@ -49,23 +49,18 @@ public class IsometricCam : MonoBehaviour
         {
             Vector3 originVector = new Vector3(_origin.x, 0, _origin.z);
             Vector3 differenceVector = new Vector3(_difference.x, 0, _difference.z);
-            this.transform.position = (originVector - differenceVector) - _startPosition;
+            transform.position = (originVector - differenceVector) - _startPosition;
+            Trans = transform.position;
         }
 
         if (Input.GetKeyDown(KeyCode.R))
             ResetCam();
     }
 
-    void PanCam()
-    {
-        Vector3 input = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
-        this.transform.Translate(input * CamSpeed * Time.deltaTime);
-    }
-
     void ZoomCam()
     {
         float val = Camera.main.orthographicSize - ScrollSpeed * Input.GetAxisRaw("Mouse ScrollWheel");
-        val = Mathf.Clamp(val, 20, 100);
+        val = Mathf.Clamp(val, 20, 120);
         Camera.main.orthographicSize = val;
     }
 

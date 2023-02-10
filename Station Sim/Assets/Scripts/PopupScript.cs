@@ -8,19 +8,31 @@ public class PopupScript : MonoBehaviour
     public TextMeshProUGUI PopupText;
     public GameObject Panel;
     public TextScript textScript;
-    public GameObject StartButton;
+    public GameObject BuildButton;
     public GameObject ChoicePanel;
+    public GameObject ButtonManager;
 
     private bool _gameStarted;
+    private bool _introDone;
+    private bool _choicePanelActive;
     private string _text;
     private Queue<string> _textQueue;
+    private CanvasGroup _canvasGroup;
+
 
     private void Start()
     {
+        Panel.SetActive(true);
         _textQueue = new Queue<string>();
         _gameStarted = false;
+        _introDone = false;
         IntroDialogue();
         NextText();
+
+        _canvasGroup = ChoicePanel.GetComponent<CanvasGroup>();
+        _canvasGroup.alpha = 0f;
+        _canvasGroup.blocksRaycasts = false;
+        _choicePanelActive = false;
     }
 
     public void IntroDialogue()
@@ -36,14 +48,16 @@ public class PopupScript : MonoBehaviour
     public void StartDialogue()
     {
         _textQueue.Clear();
-        StartButton.SetActive(false);
         _gameStarted = true;
-
-        foreach (string sentence in textScript.PlaySentences)
+        if (!_introDone)
         {
-            _textQueue.Enqueue(sentence);
+            foreach (string sentence in textScript.PlaySentences)
+            {
+                _textQueue.Enqueue(sentence);
+            }
+            _introDone = true;
+            Panel.SetActive(true);
         }
-        Panel.SetActive(true);
     }
 
     public void NextText()
@@ -53,18 +67,46 @@ public class PopupScript : MonoBehaviour
             Panel.SetActive(false);
             if (_gameStarted)
             {
-                ChoicePanel.SetActive(true);
+                ToggleChoicePanel();
+                //ChoicePanel.SetActive(true);
                 return;
             }
             else
             {
-                StartButton.SetActive(true);
+                //ButtonManager.GetComponent<ButtonManager>().ToggleChoicePanel();
+                //BuildButton.SetActive(true);
                 return;
             }
         }
 
         string sentence = _textQueue.Dequeue();
         PopupText.text = sentence;
+    }
+
+    public void WrongChoice()
+    {
+        Panel.SetActive(true);
+        PopupText.text = "no";
+    }
+
+
+    public void ToggleChoicePanel()
+    {
+        _choicePanelActive = !_choicePanelActive;
+
+        if (_choicePanelActive)
+        {
+            _canvasGroup.alpha = 1f;
+            _canvasGroup.blocksRaycasts = true;
+            //_choicePanel.SetActive(true);
+        }
+        if (!_choicePanelActive)
+        {
+            Debug.Log("skeebly");
+            _canvasGroup.alpha = 0f;
+            _canvasGroup.blocksRaycasts = false;
+            //_choicePanel.SetActive(false);
+        }
     }
 
 }

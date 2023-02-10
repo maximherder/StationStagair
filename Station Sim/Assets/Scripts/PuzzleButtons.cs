@@ -4,21 +4,28 @@ using UnityEngine;
 
 public class PuzzleButtons : MonoBehaviour
 {
-    //public List<GameObject> PuzzlePieces;
     public GameObject PuzzlePiece;
     public GameObject RequiredPiece;
-    public GameObject ScoreSystem;
-    private GameObject _progressBar;
     public GameObject Cam;
+    //public GameObject ScoreSystem;
+    private GameObject _progressBar;
     private Vector3 _camOffset;
+    private ObjectLerpScript _lerpScript;
 
 
     private void Start()
     {
-        ScoreSystem = GameObject.Find("txtPoints");
-        _camOffset = new Vector3(40, 0, 40);
+        //ScoreSystem = GameObject.Find("txtPoints");
         Cam = GameObject.Find("Camera Pivot");
+        _lerpScript = PuzzlePiece.GetComponentInChildren<ObjectLerpScript>();
+        _camOffset = new Vector3(40, 0, 40);
         _progressBar = (GameObject)Resources.Load("CanvasTiny", typeof(GameObject));
+    }
+
+    private void Update()
+    {
+
+
     }
 
     public void TogglePiece()
@@ -29,14 +36,12 @@ public class PuzzleButtons : MonoBehaviour
         }
         else if (RequiredPiece.GetComponent<PieceValueScript>().IsComplete)
         {
-            //building progress function here
             Construction();
         }
         else
         {
             Debug.Log("Missing Requirement!");
             //ScoreSystem.GetComponent<ScoreSystemScript>().UpdatePoints(-10);
-            //popup here
         }
     }
 
@@ -59,8 +64,12 @@ public class PuzzleButtons : MonoBehaviour
                 StartCoroutine(StartBuilding(pieceValueScript.BuildingTime));
                 pieceValueScript.IsInProgress = true;
 
-                GameObject realProgressBar = Instantiate(_progressBar, PuzzlePiece.transform.position, Quaternion.identity);
-                Cam.transform.position = PuzzlePiece.transform.position + _camOffset;
+                GameObject realProgressBar = Instantiate(_progressBar, (PuzzlePiece.transform.position + new Vector3(0, 10, 0)), Quaternion.identity);
+                Cam.GetComponent<IsometricCam>().Trans = PuzzlePiece.transform.position + _camOffset;
+                _lerpScript.SetDestination(pieceValueScript.BuildingTime);
+                //hier animatie aanroepen
+                //kun je met animator een tijdsparameter setten met code? want ding moet omhoog obv de buildingtime parameter
+
                 realProgressBar.GetComponentInChildren<ProgresBarScript>().BuildTime = pieceValueScript.BuildingTime;
             }
         }
@@ -75,4 +84,5 @@ public class PuzzleButtons : MonoBehaviour
 
         //ScoreSystem.GetComponent<ScoreSystemScript>().UpdatePoints(50);
     }
+
 }
