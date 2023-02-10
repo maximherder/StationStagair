@@ -7,6 +7,19 @@ public class PuzzleButtons : MonoBehaviour
     //public List<GameObject> PuzzlePieces;
     public GameObject PuzzlePiece;
     public GameObject RequiredPiece;
+    public GameObject ScoreSystem;
+    private GameObject _progressBar;
+    public GameObject Cam;
+    private Vector3 _camOffset;
+
+
+    private void Start()
+    {
+        ScoreSystem = GameObject.Find("txtPoints");
+        _camOffset = new Vector3(40, 0, 40);
+        Cam = GameObject.Find("Camera Pivot");
+        _progressBar = (GameObject)Resources.Load("CanvasTiny", typeof(GameObject));
+    }
 
     public void TogglePiece()
     {
@@ -18,24 +31,23 @@ public class PuzzleButtons : MonoBehaviour
         {
             //building progress function here
             Construction();
-
         }
         else
         {
             Debug.Log("Missing Requirement!");
+            //ScoreSystem.GetComponent<ScoreSystemScript>().UpdatePoints(-10);
             //popup here
-            //deduct points here
         }
     }
 
     public void Construction()
     {
-        //hier zorgen dat die timer begint te lopen, en zodra die voorbij is (coroutine?) de waardes veranderen
-        if (!PuzzlePiece.GetComponent<PieceValueScript>().IsComplete)
+        PieceValueScript pieceValueScript = PuzzlePiece.GetComponent<PieceValueScript>();
+
+        if (!pieceValueScript.IsComplete)
         {
-            if (!PuzzlePiece.GetComponent<PieceValueScript>().IsInProgress)
+            if (!pieceValueScript.IsInProgress)
             {
-                PuzzlePiece.GetComponent<PieceValueScript>().IsInProgress = true;
                 if (PuzzlePiece.activeInHierarchy)
                 {
                     PuzzlePiece.SetActive(false);
@@ -44,9 +56,23 @@ public class PuzzleButtons : MonoBehaviour
                 {
                     PuzzlePiece.SetActive(true);
                 }
-                PuzzlePiece.GetComponent<PieceValueScript>().IsComplete = true;
-                PuzzlePiece.GetComponent<PieceValueScript>().IsInProgress = false;
+                StartCoroutine(StartBuilding(pieceValueScript.BuildingTime));
+                pieceValueScript.IsInProgress = true;
+
+                GameObject realProgressBar = Instantiate(_progressBar, PuzzlePiece.transform.position, Quaternion.identity);
+                Cam.transform.position = PuzzlePiece.transform.position + _camOffset;
+                realProgressBar.GetComponentInChildren<ProgresBarScript>().BuildTime = pieceValueScript.BuildingTime;
             }
         }
+    }
+
+    public IEnumerator StartBuilding(float buildingTime)
+    {
+        yield return new WaitForSeconds(buildingTime);
+
+        PuzzlePiece.GetComponent<PieceValueScript>().IsComplete = true;
+        PuzzlePiece.GetComponent<PieceValueScript>().IsInProgress = false;
+
+        //ScoreSystem.GetComponent<ScoreSystemScript>().UpdatePoints(50);
     }
 }
