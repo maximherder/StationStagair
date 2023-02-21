@@ -9,11 +9,6 @@ public class ObjectLerpScript : MonoBehaviour
     Vector3 target;
     float timeToReachTarget;
 
-    void Start()
-    {
-        startPosition = transform.position;
-    }
-
     void Update()
     {
         t += Time.deltaTime / timeToReachTarget;
