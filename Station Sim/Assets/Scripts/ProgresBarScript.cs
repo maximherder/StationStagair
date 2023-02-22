@@ -26,7 +26,7 @@ public class ProgresBarScript : MonoBehaviour
 
     void GetFillAmount()
     {
-        if (_inProgress)
+        if (_inProgress) // Waarom heb je ervoor gekozen om deze logica volledig gescheiden te houden van de logica in PuzzleButton (StartBuilding)
         {
             Mask.fillAmount += (1.0f / BuildTime) * Time.deltaTime;
             if (Mask.fillAmount >= 1)

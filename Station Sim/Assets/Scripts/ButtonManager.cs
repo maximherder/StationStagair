@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ButtonManager : MonoBehaviour
 {
-    public GameObject controlsPanel;
+    public GameObject controlsPanel; //consistentie man :P
     public GameObject _choicePanel;
     private bool _controlPanelActive;
     private bool _choicePanelActive;
@@ -33,6 +33,7 @@ public class ButtonManager : MonoBehaviour
 
     public void ToggleChoicePanel()
     {
+        //dit zou je ook kunnen doen door _choicePanel.SetActive(!_choicePanel.activeInHierarchy); kunnen doen. Zelfde voor TogleControlsPanel()
         _choicePanelActive = !_choicePanelActive;
 
         if (_choicePanelActive)

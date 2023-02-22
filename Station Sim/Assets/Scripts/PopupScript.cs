@@ -33,7 +33,8 @@ public class PopupScript : MonoBehaviour
         }
     }
 
-    public void StartDialogue()
+    public void StartDialogue() // Deze naam kan verwarrend zijn, ik ga ervan uit dat je hier het dialoog dat verschijnt als je op de start button klikt bedoeld.
+                                // Ik zou deze naam gebruiken wanneer je daadwerkelijk dialoog wilt starten. Verder niets op aan te merken.
     {
         _textQueue.Clear();
         StartButton.SetActive(false);
@@ -46,7 +47,7 @@ public class PopupScript : MonoBehaviour
         Panel.SetActive(true);
     }
 
-    public void NextText()
+    public void NextText() // Dit ziet er heel netjes uit, wordt deze functie aangeroepen door op een button te klikken?
     {
         if (_textQueue.Count == 0)
         {

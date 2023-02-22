@@ -21,6 +21,9 @@ public class PuzzleButtons : MonoBehaviour
         _progressBar = (GameObject)Resources.Load("CanvasTiny", typeof(GameObject));
     }
 
+    /* Hier hadden we het al even kort over gehad, dit zou je ook kunnen doen door een list te maken (wanneer alles in een bepaalde volgorde moet ten minste.
+     * Dan zou je requiredpiece niet meer nodig hebben en de if check die je nu gebruikt voor de eerste stap ook niet.
+     */
     public void TogglePiece()
     {
         if (RequiredPiece == null)
@@ -48,7 +51,7 @@ public class PuzzleButtons : MonoBehaviour
         {
             if (!pieceValueScript.IsInProgress)
             {
-                if (PuzzlePiece.activeInHierarchy)
+                if (PuzzlePiece.activeInHierarchy) // flip je de bool altijd? Dan zou je het ook zo kunnen doen: PuzzlePiece.SetActive(!PuzzlePiece.activeInHierarchy) Als je het op deze manier leesbaarder vind is dit ook helemaal oke.
                 {
                     PuzzlePiece.SetActive(false);
                 }
@@ -61,7 +64,7 @@ public class PuzzleButtons : MonoBehaviour
 
                 GameObject realProgressBar = Instantiate(_progressBar, PuzzlePiece.transform.position, Quaternion.identity);
                 Cam.transform.position = PuzzlePiece.transform.position + _camOffset;
-                realProgressBar.GetComponentInChildren<ProgresBarScript>().BuildTime = pieceValueScript.BuildingTime;
+                realProgressBar.GetComponentInChildren<ProgresBarScript>().BuildTime = pieceValueScript.BuildingTime; // Dit is persoonlijke voorkeur maar ik zou deze regel en die hierboven omdraaien.
             }
         }
     }
