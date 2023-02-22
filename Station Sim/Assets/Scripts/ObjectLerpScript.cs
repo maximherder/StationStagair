@@ -4,21 +4,21 @@ using UnityEngine;
 
 public class ObjectLerpScript : MonoBehaviour
 {
-    float t;
-    Vector3 startPosition;
-    Vector3 target;
-    float timeToReachTarget;
+    private float t;
+    private Vector3 _startPosition;
+    private Vector3 _target;
+    private float _timeToReachTarget;
 
     void Update()
     {
-        t += Time.deltaTime / timeToReachTarget;
-        transform.position = Vector3.Lerp(startPosition, target, t);
+        t += Time.deltaTime / _timeToReachTarget;
+        transform.position = Vector3.Lerp(_startPosition, _target, t);
     }
     public void SetDestination(float time)
     {
         t = 0;
-        startPosition = transform.position;
-        timeToReachTarget = time;
-        target = new Vector3(startPosition.x, 0, startPosition.z);
+        _startPosition = transform.position;
+        _timeToReachTarget = time;
+        _target = new Vector3(_startPosition.x, 0, _startPosition.z);
     }
 }

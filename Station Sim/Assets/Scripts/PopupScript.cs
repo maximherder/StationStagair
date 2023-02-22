@@ -7,11 +7,10 @@ public class PopupScript : MonoBehaviour
 {
     public TextMeshProUGUI PopupText;
     public GameObject DialoguePanel;
-    public TextScript textScript;
     public GameObject BuildButton;
     public GameObject UIManager;
+    public TextScript textScript;
 
-    private bool _choicePanelActive;
     private string _text;
     private Queue<string> _textQueue;
     private CanvasGroup _canvasGroup;
@@ -51,8 +50,5 @@ public class PopupScript : MonoBehaviour
         DialoguePanel.SetActive(true);
         PopupText.text = text;
     }
-
-
-
 
 }

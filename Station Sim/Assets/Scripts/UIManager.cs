@@ -41,6 +41,8 @@ public class UIManager : MonoBehaviour
 
     public void ToggleChoicePanel()
     {
+        //simpele animatie dat ie omhoog en omlaag schuift (met unity's animatie ding, niet lerp ffs)
+
         _choicePanelActive = !_choicePanelActive;
 
         if (_choicePanelActive)

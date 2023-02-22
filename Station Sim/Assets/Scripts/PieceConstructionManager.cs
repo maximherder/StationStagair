@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PuzzleButtons : MonoBehaviour
+public class PieceConstructionManager : MonoBehaviour
 {
-    public GameObject PuzzlePiece;
     public GameObject Cam;
+    public GameObject PuzzlePiece;
     private GameObject _progressBar;
     private Vector3 _camOffset;
     private ObjectLerpScript _lerpScript;
@@ -15,10 +15,10 @@ public class PuzzleButtons : MonoBehaviour
 
     private void Start()
     {
-        Cam = GameObject.Find("Camera Pivot");
         _camOffset = new Vector3(40, 0, 40);
         _progressBar = (GameObject)Resources.Load("CanvasTiny", typeof(GameObject));
     }
+
 
     public void TogglePiece()
     {
@@ -35,7 +35,6 @@ public class PuzzleButtons : MonoBehaviour
             PuzzlePiece.SetActive(true);
             PlayConstructionAnimation(pieceValueScript);
         }
-        //StartCoroutine(StartBuilding(pieceValueScript.BuildingTime));
     }
 
     private void PlayConstructionAnimation(PieceValueScript pieceValueScript)
@@ -46,11 +45,11 @@ public class PuzzleButtons : MonoBehaviour
         _lerpScript.SetDestination(pieceValueScript.BuildingTime);
     }
 
-    //public IEnumerator StartBuilding(float buildingTime)
-    //{
-    //    yield return new WaitForSeconds(buildingTime);
-    //    //progressbar logica hier aanroepen
+    private void PlayDestroyAnimation()
+    {
+        Cam.GetComponent<IsometricCam>().Trans = PuzzlePiece.transform.position + _camOffset;
 
-    //}
+
+    }
 
 }
