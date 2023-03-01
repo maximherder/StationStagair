@@ -34,6 +34,18 @@ public class PopupScript : MonoBehaviour
         }
     }
 
+    public void DecommissionDialogue()
+    {
+        DialoguePanel.SetActive(true);
+        _textQueue.Clear();
+
+        foreach (string sentence in textScript.DecommissionSentences)
+        {
+            _textQueue.Enqueue(sentence);
+        }
+        NextText();
+    }
+
     public void NextText()
     {
         if (_textQueue.Count == 0)
@@ -45,7 +57,7 @@ public class PopupScript : MonoBehaviour
         PopupText.text = sentence;
     }
 
-    public void WrongChoice(string text)
+    public void DisplayNewText(string text)
     {
         DialoguePanel.SetActive(true);
         PopupText.text = text;

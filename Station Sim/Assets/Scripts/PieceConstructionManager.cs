@@ -7,6 +7,8 @@ public class PieceConstructionManager : MonoBehaviour
 {
     public GameObject Cam;
     public GameObject PuzzlePiece;
+    public GameObject Tunnel;
+
     private GameObject _progressBar;
     private Vector3 _camOffset;
     private ObjectLerpScript _lerpScript;
@@ -27,8 +29,7 @@ public class PieceConstructionManager : MonoBehaviour
 
         if (PuzzlePiece.activeInHierarchy)
         {
-            //animatie voor deconstrucion --> lerp omlaag
-            PuzzlePiece.SetActive(false);
+            PlayDestroyAnimation();
         }
         else
         {
@@ -42,14 +43,21 @@ public class PieceConstructionManager : MonoBehaviour
         GameObject realProgressBar = Instantiate(_progressBar, (PuzzlePiece.transform.position + new Vector3(0, 10, 0)), Quaternion.identity);
         realProgressBar.GetComponentInChildren<ProgresBarScript>().BuildTime = pieceValueScript.BuildingTime;
         Cam.GetComponent<IsometricCam>().Trans = PuzzlePiece.transform.position + _camOffset;
-        _lerpScript.SetDestination(pieceValueScript.BuildingTime);
+        _lerpScript.Move = true;
+        _lerpScript.SetDestination(pieceValueScript.BuildingTime, true);
     }
 
     private void PlayDestroyAnimation()
     {
+        _lerpScript.Move = true;
         Cam.GetComponent<IsometricCam>().Trans = PuzzlePiece.transform.position + _camOffset;
+        _lerpScript.SetDestination(3, false);
 
+    }
 
+    public void MoveTunnel()
+    {
+        Tunnel.GetComponent<Animator>().Play("Tunnel Move");
     }
 
 }

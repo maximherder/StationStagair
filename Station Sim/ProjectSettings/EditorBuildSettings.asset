@@ -8,10 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TitleScreen.unity
     guid: c741f15ebacc26d4e9a847fc3175b119
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/RaaltePuzzle.unity
-    guid: 470e2eaa62d4dfa459022b98c7eb3cd2
+    path: Assets/Scenes/RaaltePuzzle 1.unity
+    guid: 5ad8ec893fd12854f8a50165fac68181
   m_configObjects: {}

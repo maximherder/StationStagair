@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ObjectLerpScript : MonoBehaviour
 {
+    public bool Move = false;
     private float t;
     private Vector3 _startPosition;
     private Vector3 _target;
@@ -11,14 +12,27 @@ public class ObjectLerpScript : MonoBehaviour
 
     void Update()
     {
-        t += Time.deltaTime / _timeToReachTarget;
-        transform.position = Vector3.Lerp(_startPosition, _target, t);
+        if (Move)
+        {
+            t += Time.deltaTime / _timeToReachTarget;
+            transform.position = Vector3.Lerp(_startPosition, _target, t);
+            if (transform.position.y == _target.y)
+            {
+                Move = false;
+            }
+        }
     }
-    public void SetDestination(float time)
+    public void SetDestination(float time, bool up)
     {
         t = 0;
         _startPosition = transform.position;
         _timeToReachTarget = time;
-        _target = new Vector3(_startPosition.x, 0, _startPosition.z);
+        if (up)
+            _target = new Vector3(_startPosition.x, 0, _startPosition.z);
+        else
+            _target = new Vector3(_startPosition.x, -10, _startPosition.z);
+
     }
+
+
 }

@@ -2,87 +2,128 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class ChoiceManager : MonoBehaviour
 {
     //hier lijst van gewoon die class choicemanager, lijst heeft rondes (dus steeds 2 keuzes) dus die heeft dan parameters voor goed/fout, en gameobject en titel
     public List<ChoiceRound> Rounds;
-    public TextMeshProUGUI Panel1;
-    public TextMeshProUGUI Panel2;
     public GameObject UIManager;
     public GameObject PopupPanel;
-    public GameObject PuzzleButtons;
+    public GameObject PieceConstructionManager;
+    public int Index = 0;
 
-    private int _index = 0;
+    private bool _decommissioned = false;
+    private int _score;
+    private int _timeCount;
 
-    public void StartRound()
+    private void Update()
     {
-        //build button op dezelfde hoogte als choices, allebei aan onderkant van het scherm anchoren, button grotere squire, met een bouwgerelateerde image er in
-        Panel1.text = Rounds[_index].Choice1.ChoiceTitle;
-        Panel2.text = Rounds[_index].Choice2.ChoiceTitle;
-        UIManager.GetComponent<UIManager>().ToggleChoicePanel();
-
-
+        if (_decommissioned)
+        {
+           // _timeCount
+        }
     }
 
+    /// <summary>
+    /// Called by "BuildButton"
+    /// </summary>
+    public void StartRound()
+    {
+        UIManager.GetComponent<UIManager>().UpdateChoicePanels(Rounds[Index].Choice1.ChoiceTitle, Rounds[Index].Choice2.ChoiceTitle);
+        UIManager.GetComponent<UIManager>().ToggleChoicePanel();
+    }
 
+    /// <summary>
+    /// Called by Choice Panels
+    /// </summary>
+    /// <param name="choice">This value keeps track of which Choice Panel was selected</param>
     public void CheckAnswer(int choice)
     {
         if (choice == 0)
         {
-            if (Rounds[_index].Choice1.Correct)  //goed
-            {  
+            if (Rounds[Index].Choice1.Correct) //Right Choice
+            {
                 //Score stuff
-                PuzzleButtons.GetComponent<PieceConstructionManager>().PuzzlePiece = Rounds[_index].Choice1.Piece;
-                PuzzleButtons.GetComponent<PieceConstructionManager>().TogglePiece();
+                PieceConstructionManager.GetComponent<PieceConstructionManager>().PuzzlePiece = Rounds[Index].Choice1.Piece;
+                PieceConstructionManager.GetComponent<PieceConstructionManager>().TogglePiece();
                 EndRound();
+                CheckStage();
             }
-            else //fout
+            else //Wrong Choice
             {
                 //Score stuff
                 UIManager.GetComponent<UIManager>().ToggleChoicePanel();
-                PopupPanel.GetComponent<PopupScript>().WrongChoice(Rounds[_index].Choice1.Hint);
-                PopupPanel.SetActive(true);
+                PopupPanel.GetComponent<PopupScript>().DisplayNewText(Rounds[Index].Choice1.Hint);
             }
         }
         else if (choice == 1)
         {
-            if (Rounds[_index].Choice2.Correct)
+            if (Rounds[Index].Choice2.Correct)
             {
-                PuzzleButtons.GetComponent<PieceConstructionManager>().PuzzlePiece = Rounds[_index].Choice2.Piece;
-                PuzzleButtons.GetComponent<PieceConstructionManager>().TogglePiece();
+                PieceConstructionManager.GetComponent<PieceConstructionManager>().PuzzlePiece = Rounds[Index].Choice2.Piece;
+                PieceConstructionManager.GetComponent<PieceConstructionManager>().TogglePiece();
                 EndRound();
-
+                CheckStage();
             }
             else
             {
                 UIManager.GetComponent<UIManager>().ToggleChoicePanel();
-                PopupPanel.GetComponent<PopupScript>().WrongChoice(Rounds[_index].Choice2.Hint);
-                PopupPanel.SetActive(true);
+                PopupPanel.GetComponent<PopupScript>().DisplayNewText(Rounds[Index].Choice2.Hint);
             }
-        }
-        if (_index == Rounds.Count)
-        {
-            Debug.Log("GAME FINISHED");
-            //game afronden (de nieuwe wegen bouwen, bomen springen omhoog, waterafvoer bij de noord transfer, end results scherm aan)
-        }
+        }        
+    }
 
-        if (_index == 5)
+    private void EndRound()
+    {
+        UIManager.GetComponent<UIManager>().ToggleChoicePanel();
+        if (Index + 1 != Rounds.Count)
+            Index++;
+        else
         {
-            Debug.Log("TRAINSTATION IS DECOMMISSIONED NOW, YOU HAVE 10 DAYS TO FINISH THE STATION");
-            //hier de buitendienststelling popup
-            
+            //play tree animation
+            //build roads
+            PopupPanel.GetComponent<PopupScript>().BuildButton.SetActive(false);
+            UIManager.GetComponent<UIManager>().DisplayEndResults();
+        }
+    }
+
+    private void CheckStage()
+    {
+        if (Index == 5)
+        {
+            UIManager.GetComponent<UIManager>().ToggleDecommissionBorder();
+            PopupPanel.GetComponent<PopupScript>().DecommissionDialogue();
+
             //misschien een timer starten en als de volgende keuzes voor het station niet binnen die tijd gemaakt zijn, game over
             //als foute keuzes gemaakt worden, extra tijd van de timer aftrekken
 
             //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);  om bij game over spel te herstarten ofzo
         }
+
+        if (Index == 9)
+        {
+            UIManager.GetComponent<UIManager>().ToggleDecommissionBorder();
+            PopupPanel.GetComponent<PopupScript>().DisplayNewText("Good job! The station is now functional again, carry on with the rest of the construction!");
+            //automatisch het middenstuk van tunnel verschuiven naar goede plek
+
+            PieceConstructionManager.GetComponent<PieceConstructionManager>().MoveTunnel();
+        }
     }
 
-    public void EndRound()
+    //coroutine voor buitendienststelling timer?
+    private IEnumerator DecommissionTimer()
     {
-        UIManager.GetComponent<UIManager>().ToggleChoicePanel();
-        _index++;
+        yield return null; 
     }
 
+    public void ResetGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
 }
