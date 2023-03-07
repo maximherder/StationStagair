@@ -12851,6 +12851,30 @@ MonoBehaviour:
     Construction: 0
     BackgroundLayer: 0
     Source: {fileID: 0}
+  - Name: CorrectFX
+    Loop: 0
+    Clip: {fileID: 8300000, guid: e0179e0e0fb54e143b98098accfe3d73, type: 3}
+    Volume: 1
+    Destruction: 0
+    Construction: 0
+    BackgroundLayer: 0
+    Source: {fileID: 0}
+  - Name: WrongFX
+    Loop: 0
+    Clip: {fileID: 8300000, guid: f348e8c2a01eb444d8534e08bc59e594, type: 3}
+    Volume: 1
+    Destruction: 0
+    Construction: 0
+    BackgroundLayer: 0
+    Source: {fileID: 0}
+  - Name: GameComplete
+    Loop: 0
+    Clip: {fileID: 8300000, guid: ee634ab82a799f649af66f69bfcb3c72, type: 3}
+    Volume: 1
+    Destruction: 0
+    Construction: 0
+    BackgroundLayer: 0
+    Source: {fileID: 0}
 --- !u!4 &186906757
 Transform:
   m_ObjectHideFlags: 0

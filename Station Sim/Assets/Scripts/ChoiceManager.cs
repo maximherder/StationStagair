@@ -47,6 +47,7 @@ public class ChoiceManager : MonoBehaviour
             if (Rounds[_index].Choice1.Correct) //Right Choice
             {
                 //Score stuff
+                FindObjectOfType<AudioManager>().Play("CorrectFX");
                 PieceConstructionManager.GetComponent<PieceConstructionManager>().PuzzlePiece = Rounds[_index].Choice1.Piece;
                 PieceConstructionManager.GetComponent<PieceConstructionManager>().TogglePiece();
                 EndRound();
@@ -55,6 +56,7 @@ public class ChoiceManager : MonoBehaviour
             else //Wrong Choice
             {
                 //Score stuff
+                FindObjectOfType<AudioManager>().Play("WrongFX");
                 UIManager.GetComponent<UIManager>().ToggleChoicePanel();
                 PopupManager.GetComponent<PopupScript>().DisplayNewText(Rounds[_index].Choice1.Hint);
             }
@@ -63,6 +65,7 @@ public class ChoiceManager : MonoBehaviour
         {
             if (Rounds[_index].Choice2.Correct)
             {
+                FindObjectOfType<AudioManager>().Play("CorrectFX");
                 PieceConstructionManager.GetComponent<PieceConstructionManager>().PuzzlePiece = Rounds[_index].Choice2.Piece;
                 PieceConstructionManager.GetComponent<PieceConstructionManager>().TogglePiece();
                 EndRound();
@@ -70,6 +73,7 @@ public class ChoiceManager : MonoBehaviour
             }
             else
             {
+                FindObjectOfType<AudioManager>().Play("WrongFX");
                 UIManager.GetComponent<UIManager>().ToggleChoicePanel();
                 PopupManager.GetComponent<PopupScript>().DisplayNewText(Rounds[_index].Choice2.Hint);
             }
@@ -87,6 +91,7 @@ public class ChoiceManager : MonoBehaviour
             //build roads
             PopupManager.GetComponent<PopupScript>().BuildButton.SetActive(false);
             UIManager.GetComponent<UIManager>().DisplayEndResults();
+            FindObjectOfType<AudioManager>().Play("GameComplete");
         }
     }
 
