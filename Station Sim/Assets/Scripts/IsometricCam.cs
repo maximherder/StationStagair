@@ -60,7 +60,7 @@ public class IsometricCam : MonoBehaviour
     void ZoomCam()
     {
         float val = Camera.main.orthographicSize - ScrollSpeed * Input.GetAxisRaw("Mouse ScrollWheel");
-        val = Mathf.Clamp(val, 20, 120);
+        val = Mathf.Clamp(val, 60, 160);
         Camera.main.orthographicSize = val;
     }
 

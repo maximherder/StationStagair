@@ -9,10 +9,10 @@ public class ChoiceManager : MonoBehaviour
     //hier lijst van gewoon die class choicemanager, lijst heeft rondes (dus steeds 2 keuzes) dus die heeft dan parameters voor goed/fout, en gameobject en titel
     public List<ChoiceRound> Rounds;
     public GameObject UIManager;
-    public GameObject PopupPanel;
+    public GameObject PopupManager;
     public GameObject PieceConstructionManager;
-    public int Index = 0;
 
+    private int _index = 0;
     private bool _decommissioned = false;
     private int _score;
     private int _timeCount;
@@ -30,8 +30,9 @@ public class ChoiceManager : MonoBehaviour
     /// </summary>
     public void StartRound()
     {
-        UIManager.GetComponent<UIManager>().UpdateChoicePanels(Rounds[Index].Choice1.ChoiceTitle, Rounds[Index].Choice2.ChoiceTitle);
+        UIManager.GetComponent<UIManager>().UpdateChoicePanels(Rounds[_index].Choice1.ChoiceTitle, Rounds[_index].Choice2.ChoiceTitle);
         UIManager.GetComponent<UIManager>().ToggleChoicePanel();
+        FindObjectOfType<AudioManager>().Play("ButtonClick");
     }
 
     /// <summary>
@@ -40,12 +41,13 @@ public class ChoiceManager : MonoBehaviour
     /// <param name="choice">This value keeps track of which Choice Panel was selected</param>
     public void CheckAnswer(int choice)
     {
+        FindObjectOfType<AudioManager>().Play("ButtonClick");
         if (choice == 0)
         {
-            if (Rounds[Index].Choice1.Correct) //Right Choice
+            if (Rounds[_index].Choice1.Correct) //Right Choice
             {
                 //Score stuff
-                PieceConstructionManager.GetComponent<PieceConstructionManager>().PuzzlePiece = Rounds[Index].Choice1.Piece;
+                PieceConstructionManager.GetComponent<PieceConstructionManager>().PuzzlePiece = Rounds[_index].Choice1.Piece;
                 PieceConstructionManager.GetComponent<PieceConstructionManager>().TogglePiece();
                 EndRound();
                 CheckStage();
@@ -54,14 +56,14 @@ public class ChoiceManager : MonoBehaviour
             {
                 //Score stuff
                 UIManager.GetComponent<UIManager>().ToggleChoicePanel();
-                PopupPanel.GetComponent<PopupScript>().DisplayNewText(Rounds[Index].Choice1.Hint);
+                PopupManager.GetComponent<PopupScript>().DisplayNewText(Rounds[_index].Choice1.Hint);
             }
         }
         else if (choice == 1)
         {
-            if (Rounds[Index].Choice2.Correct)
+            if (Rounds[_index].Choice2.Correct)
             {
-                PieceConstructionManager.GetComponent<PieceConstructionManager>().PuzzlePiece = Rounds[Index].Choice2.Piece;
+                PieceConstructionManager.GetComponent<PieceConstructionManager>().PuzzlePiece = Rounds[_index].Choice2.Piece;
                 PieceConstructionManager.GetComponent<PieceConstructionManager>().TogglePiece();
                 EndRound();
                 CheckStage();
@@ -69,7 +71,7 @@ public class ChoiceManager : MonoBehaviour
             else
             {
                 UIManager.GetComponent<UIManager>().ToggleChoicePanel();
-                PopupPanel.GetComponent<PopupScript>().DisplayNewText(Rounds[Index].Choice2.Hint);
+                PopupManager.GetComponent<PopupScript>().DisplayNewText(Rounds[_index].Choice2.Hint);
             }
         }        
     }
@@ -77,23 +79,23 @@ public class ChoiceManager : MonoBehaviour
     private void EndRound()
     {
         UIManager.GetComponent<UIManager>().ToggleChoicePanel();
-        if (Index + 1 != Rounds.Count)
-            Index++;
+        if (_index + 1 != Rounds.Count)
+            _index++;
         else
         {
             //play tree animation
             //build roads
-            PopupPanel.GetComponent<PopupScript>().BuildButton.SetActive(false);
+            PopupManager.GetComponent<PopupScript>().BuildButton.SetActive(false);
             UIManager.GetComponent<UIManager>().DisplayEndResults();
         }
     }
 
     private void CheckStage()
     {
-        if (Index == 5)
+        if (_index == 5)
         {
             UIManager.GetComponent<UIManager>().ToggleDecommissionBorder();
-            PopupPanel.GetComponent<PopupScript>().DecommissionDialogue();
+            PopupManager.GetComponent<PopupScript>().DecommissionDialogue();
 
             //misschien een timer starten en als de volgende keuzes voor het station niet binnen die tijd gemaakt zijn, game over
             //als foute keuzes gemaakt worden, extra tijd van de timer aftrekken
@@ -101,12 +103,10 @@ public class ChoiceManager : MonoBehaviour
             //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);  om bij game over spel te herstarten ofzo
         }
 
-        if (Index == 9)
+        if (_index == 9)
         {
             UIManager.GetComponent<UIManager>().ToggleDecommissionBorder();
-            PopupPanel.GetComponent<PopupScript>().DisplayNewText("Good job! The station is now functional again, carry on with the rest of the construction!");
-            //automatisch het middenstuk van tunnel verschuiven naar goede plek
-
+            PopupManager.GetComponent<PopupScript>().DisplayNewText("Good job! The station is now functional again, carry on with the rest of the construction!");
             PieceConstructionManager.GetComponent<PieceConstructionManager>().MoveTunnel();
         }
     }
@@ -115,15 +115,5 @@ public class ChoiceManager : MonoBehaviour
     private IEnumerator DecommissionTimer()
     {
         yield return null; 
-    }
-
-    public void ResetGame()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
-    public void ReturnToMenu()
-    {
-        SceneManager.LoadScene(0);
     }
 }

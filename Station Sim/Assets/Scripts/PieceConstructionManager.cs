@@ -30,11 +30,13 @@ public class PieceConstructionManager : MonoBehaviour
         if (PuzzlePiece.activeInHierarchy)
         {
             PlayDestroyAnimation();
+            FindObjectOfType<AudioManager>().PlayDestruction();
         }
         else
         {
             PuzzlePiece.SetActive(true);
             PlayConstructionAnimation(pieceValueScript);
+            FindObjectOfType<AudioManager>().PlayConstruction();
         }
     }
 

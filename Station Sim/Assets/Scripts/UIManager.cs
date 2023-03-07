@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -29,7 +30,7 @@ public class UIManager : MonoBehaviour
         _canvasGroup.blocksRaycasts = false;
         _choicePanelActive = false;
         _borderActive = false;
-}
+    }
 
 
     public void ToggleControlsPanel()
@@ -48,8 +49,6 @@ public class UIManager : MonoBehaviour
 
     public void ToggleChoicePanel()
     {
-        //simpele animatie dat ie omhoog en omlaag schuift (met unity's animatie ding, niet lerp ffs)
-
         _choicePanelActive = !_choicePanelActive;
 
         if (_choicePanelActive)
@@ -88,9 +87,18 @@ public class UIManager : MonoBehaviour
     public void DisplayEndResults()
     {
         EndScreen.SetActive(true);
-        //enable score panel that contains score and a button to quit, and a button to restart, and a button to go back to the main menu
     }
 
-    //update and toggle de choice panels in deze class
+    //This function is attached to the Reset Button in the EndScreen Panel
+    public void ResetGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    //This function is attached to the Menu Button in the EndScreen Panel
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
 
 }

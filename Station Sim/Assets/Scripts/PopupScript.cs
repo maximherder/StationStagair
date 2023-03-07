@@ -8,7 +8,6 @@ public class PopupScript : MonoBehaviour
     public TextMeshProUGUI PopupText;
     public GameObject DialoguePanel;
     public GameObject BuildButton;
-    public GameObject UIManager;
     public TextScript textScript;
 
     private string _text;
