@@ -11,6 +11,8 @@ public class UIManager : MonoBehaviour
     public GameObject EndScreen;
     public TextMeshProUGUI Panel1;
     public TextMeshProUGUI Panel2;
+    public TextMeshProUGUI RankText;
+    public TextMeshProUGUI ScoreText;
     public GameObject DecommissionBorder;
 
     private bool _controlPanelActive;
@@ -101,4 +103,9 @@ public class UIManager : MonoBehaviour
         SceneManager.LoadScene(0);
     }
 
+    public void UpdateScore(int score, string rank)
+    {
+        ScoreText.text = "Score: " + score.ToString();
+        RankText.text = "Rank: " + rank;
+    }
 }

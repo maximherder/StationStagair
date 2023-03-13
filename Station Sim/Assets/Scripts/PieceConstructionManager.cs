@@ -8,6 +8,7 @@ public class PieceConstructionManager : MonoBehaviour
     public GameObject Cam;
     public GameObject PuzzlePiece;
     public GameObject Tunnel;
+    public GameObject TransferConnection;
 
     private GameObject _progressBar;
     private Vector3 _camOffset;
@@ -60,6 +61,7 @@ public class PieceConstructionManager : MonoBehaviour
     public void MoveTunnel()
     {
         Tunnel.GetComponent<Animator>().Play("Tunnel Move");
+        TransferConnection.GetComponent<Animator>().Play("Transfer Move");
     }
 
 }

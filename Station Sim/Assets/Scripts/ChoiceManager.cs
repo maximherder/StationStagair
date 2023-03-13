@@ -11,17 +11,22 @@ public class ChoiceManager : MonoBehaviour
     public GameObject UIManager;
     public GameObject PopupManager;
     public GameObject PieceConstructionManager;
+    public GameObject Cam;
+    public GameObject ScoreManager;
 
+    [SerializeField]
+    private GameObject Roads;
     private int _index = 0;
     private bool _decommissioned = false;
     private int _score;
     private int _timeCount;
+    private bool _firstGuess = true;
 
     private void Update()
     {
         if (_decommissioned)
         {
-           // _timeCount
+            // _timeCount
         }
     }
 
@@ -59,6 +64,7 @@ public class ChoiceManager : MonoBehaviour
                 FindObjectOfType<AudioManager>().Play("WrongFX");
                 UIManager.GetComponent<UIManager>().ToggleChoicePanel();
                 PopupManager.GetComponent<PopupScript>().DisplayNewText(Rounds[_index].Choice1.Hint);
+                _firstGuess = false;
             }
         }
         else if (choice == 1)
@@ -76,22 +82,29 @@ public class ChoiceManager : MonoBehaviour
                 FindObjectOfType<AudioManager>().Play("WrongFX");
                 UIManager.GetComponent<UIManager>().ToggleChoicePanel();
                 PopupManager.GetComponent<PopupScript>().DisplayNewText(Rounds[_index].Choice2.Hint);
+                _firstGuess = false;
             }
-        }        
+        }
     }
 
     private void EndRound()
     {
+        if (_firstGuess)
+        {
+            ScoreManager.GetComponent<ScoreManager>().Score++;
+        }
+        _firstGuess = true;
         UIManager.GetComponent<UIManager>().ToggleChoicePanel();
         if (_index + 1 != Rounds.Count)
             _index++;
         else
         {
-            //play tree animation
-            //build roads
+            //PieceConstructionManager.GetComponent<PieceConstructionManager>().SpawnTrees();
+            Roads.SetActive(true);
             PopupManager.GetComponent<PopupScript>().BuildButton.SetActive(false);
-            UIManager.GetComponent<UIManager>().DisplayEndResults();
             FindObjectOfType<AudioManager>().Play("GameComplete");
+            ScoreManager.GetComponent<ScoreManager>().DetermineRank();
+            StartCoroutine(Ending());
         }
     }
 
@@ -119,6 +132,14 @@ public class ChoiceManager : MonoBehaviour
     //coroutine voor buitendienststelling timer?
     private IEnumerator DecommissionTimer()
     {
-        yield return null; 
+        yield return null;
+    }
+
+    private IEnumerator Ending()
+    {
+        yield return new WaitForSeconds(5);
+        UIManager.GetComponent<UIManager>().DisplayEndResults();
+        Cam.GetComponent<IsometricCam>().ZoomToRaalte();
+        //activate 
     }
 }

@@ -12,7 +12,10 @@ public class IsometricCam : MonoBehaviour
     private Vector3 _difference;
     private Vector3 _startPosition;
     private bool _drag = false;
+    private bool _gameDone = false;
     private float _camSize;
+    private Vector3 _endPos = new Vector3(1760, 90, -580);
+    private Vector3 _endPan = new Vector3(-2, 0, 1);
 
     // Start is called before the first frame update
     void Start()
@@ -31,30 +34,38 @@ public class IsometricCam : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (Input.GetMouseButton(1))
+        if (!_gameDone)
         {
-            _difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - Camera.main.transform.position;
-            if (_drag == false)
+
+            if (Input.GetMouseButton(1))
             {
-                _drag = true;
-                _origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                _difference = Camera.main.ScreenToWorldPoint(Input.mousePosition) - Camera.main.transform.position;
+                if (_drag == false)
+                {
+                    _drag = true;
+                    _origin = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                }
             }
+            else
+            {
+                _drag = false;
+            }
+
+            if (_drag)
+            {
+                Vector3 originVector = new Vector3(_origin.x, 0, _origin.z);
+                Vector3 differenceVector = new Vector3(_difference.x, 0, _difference.z);
+                transform.position = (originVector - differenceVector) - _startPosition;
+                Trans = transform.position;
+            }
+
+            if (Input.GetKeyDown(KeyCode.R))
+                ResetCam();
         }
         else
         {
-            _drag = false;
+            Trans = (Trans += _endPan * Time.deltaTime);
         }
-
-        if (_drag)
-        {
-            Vector3 originVector = new Vector3(_origin.x, 0, _origin.z);
-            Vector3 differenceVector = new Vector3(_difference.x, 0, _difference.z);
-            transform.position = (originVector - differenceVector) - _startPosition;
-            Trans = transform.position;
-        }
-
-        if (Input.GetKeyDown(KeyCode.R))
-            ResetCam();
     }
 
     void ZoomCam()
@@ -68,5 +79,13 @@ public class IsometricCam : MonoBehaviour
     {
         this.transform.position = new Vector3(0, 0, 0);
         Camera.main.orthographicSize = _camSize;
+    }
+
+    public void ZoomToRaalte()
+    {
+        _gameDone = true;
+        Trans = _endPos;
+        transform.rotation = Quaternion.Euler(-40, -115, 0);
+        Camera.main.orthographicSize = 80;
     }
 }
