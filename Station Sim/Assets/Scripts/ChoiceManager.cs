@@ -12,22 +12,19 @@ public class ChoiceManager : MonoBehaviour
     public GameObject PopupManager;
     public GameObject PieceConstructionManager;
     public GameObject Cam;
+    public GameObject Train;
     public GameObject ScoreManager;
 
     [SerializeField]
     private GameObject Roads;
     private int _index = 0;
-    private bool _decommissioned = false;
     private int _score;
     private int _timeCount;
     private bool _firstGuess = true;
 
     private void Update()
     {
-        if (_decommissioned)
-        {
-            // _timeCount
-        }
+       
     }
 
     /// <summary>
@@ -114,11 +111,7 @@ public class ChoiceManager : MonoBehaviour
         {
             UIManager.GetComponent<UIManager>().ToggleDecommissionBorder();
             PopupManager.GetComponent<PopupScript>().DecommissionDialogue();
-
-            //misschien een timer starten en als de volgende keuzes voor het station niet binnen die tijd gemaakt zijn, game over
-            //als foute keuzes gemaakt worden, extra tijd van de timer aftrekken
-
-            //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);  om bij game over spel te herstarten ofzo
+            Train.GetComponent<TrainScript>().Decommissioned = true;
         }
 
         if (_index == 9)
@@ -126,13 +119,9 @@ public class ChoiceManager : MonoBehaviour
             UIManager.GetComponent<UIManager>().ToggleDecommissionBorder();
             PopupManager.GetComponent<PopupScript>().DisplayNewText("Good job! The station is now functional again, carry on with the rest of the construction!");
             PieceConstructionManager.GetComponent<PieceConstructionManager>().MoveTunnel();
-        }
-    }
+            Train.GetComponent<TrainScript>().Decommissioned = false;
 
-    //coroutine voor buitendienststelling timer?
-    private IEnumerator DecommissionTimer()
-    {
-        yield return null;
+        }
     }
 
     private IEnumerator Ending()
@@ -142,4 +131,5 @@ public class ChoiceManager : MonoBehaviour
         Cam.GetComponent<IsometricCam>().ZoomToRaalte();
         //activate 
     }
+
 }

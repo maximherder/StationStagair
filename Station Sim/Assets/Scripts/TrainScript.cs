@@ -5,20 +5,45 @@ using UnityEngine.SceneManagement;
 
 public class TrainScript : MonoBehaviour
 {
-    //public Animator Train;
     public GameObject Train;
+    private GameObject _instantiatedTrain;
+    private bool _trainReady = true;
+    public bool Decommissioned = false;
 
+    private void Start()
+    {
+        SpawnTrain();
+    }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.T))
+        if (!Decommissioned)
         {
-            TrainAction();
+            if (_trainReady)
+                StartCoroutine(TrainDelay());
         }
+        else
+            Destroy(_instantiatedTrain);
     }
 
-    public void TrainAction()
+    private IEnumerator TrainDelay()
     {
-        Train.GetComponent<Animator>().Play("Train_In");
+        _trainReady = false;
+        yield return new WaitForSeconds(15);
+        if (_instantiatedTrain != null)
+        {
+            Destroy(_instantiatedTrain);
+        }
+        yield return new WaitForSeconds(6);
+        SpawnTrain();
     }
+
+    private void SpawnTrain()
+    {
+        _instantiatedTrain = Instantiate(Train, new Vector3(0, 0, 0), Quaternion.identity);
+        _instantiatedTrain.GetComponent<Animator>().Play("Train West");
+        _trainReady = true;
+    }
+
+
 }
