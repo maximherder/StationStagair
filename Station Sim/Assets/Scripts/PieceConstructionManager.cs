@@ -9,6 +9,7 @@ public class PieceConstructionManager : MonoBehaviour
     public GameObject PuzzlePiece;
     public GameObject Tunnel;
     public GameObject TransferConnection;
+    public GameObject DustCloud;
 
     private GameObject _progressBar;
     private Vector3 _camOffset;
@@ -18,7 +19,7 @@ public class PieceConstructionManager : MonoBehaviour
 
     private void Start()
     {
-        _camOffset = new Vector3(40, 0, 40);
+        _camOffset = new Vector3(40, 0, -50);
         _progressBar = (GameObject)Resources.Load("CanvasTiny", typeof(GameObject));
     }
 
@@ -54,6 +55,7 @@ public class PieceConstructionManager : MonoBehaviour
     {
         _lerpScript.Move = true;
         Cam.GetComponent<IsometricCam>().Trans = PuzzlePiece.transform.position + _camOffset;
+        GameObject dust = Instantiate(DustCloud, PuzzlePiece.transform.position + new Vector3(0, 0, -15), Quaternion.identity);
         _lerpScript.SetDestination(3, false);
 
     }

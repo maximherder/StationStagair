@@ -14,7 +14,7 @@ public class IsometricCam : MonoBehaviour
     private bool _drag = false;
     private bool _gameDone = false;
     private float _camSize;
-    private Vector3 _endPos = new Vector3(1760, 90, -580);
+    private Vector3 _endPos = new Vector3(1840, 90, -560);
     private Vector3 _endPan = new Vector3(-2, 0, 1);
 
     // Start is called before the first frame update
@@ -22,6 +22,7 @@ public class IsometricCam : MonoBehaviour
     {
         _startPosition = new Vector3(-20, 0, -65);
         _camSize = Camera.main.orthographicSize;
+        Trans = _startPosition;
     }
 
     // Update is called once per frame
@@ -85,7 +86,7 @@ public class IsometricCam : MonoBehaviour
     {
         _gameDone = true;
         Trans = _endPos;
-        transform.rotation = Quaternion.Euler(-40, -115, 0);
+        transform.rotation = Quaternion.Euler(-13, -115, 0);
         Camera.main.orthographicSize = 80;
     }
 }

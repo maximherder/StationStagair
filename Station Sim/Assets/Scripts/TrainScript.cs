@@ -12,7 +12,7 @@ public class TrainScript : MonoBehaviour
 
     private void Start()
     {
-        SpawnTrain();
+
     }
 
     private void Update()
@@ -20,10 +20,19 @@ public class TrainScript : MonoBehaviour
         if (!Decommissioned)
         {
             if (_trainReady)
+            {
+                SpawnTrain();
                 StartCoroutine(TrainDelay());
+            }
         }
-        else
-            Destroy(_instantiatedTrain);
+        else if (Decommissioned)
+        {
+            StopCoroutine(TrainDelay());
+            if (_instantiatedTrain != null)
+            {
+                Destroy(_instantiatedTrain);
+            }
+        }
     }
 
     private IEnumerator TrainDelay()
@@ -35,14 +44,13 @@ public class TrainScript : MonoBehaviour
             Destroy(_instantiatedTrain);
         }
         yield return new WaitForSeconds(6);
-        SpawnTrain();
+        _trainReady = true;
     }
 
     private void SpawnTrain()
     {
         _instantiatedTrain = Instantiate(Train, new Vector3(0, 0, 0), Quaternion.identity);
         _instantiatedTrain.GetComponent<Animator>().Play("Train West");
-        _trainReady = true;
     }
 
 

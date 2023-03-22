@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/TitleScreen.unity
     guid: c741f15ebacc26d4e9a847fc3175b119
   - enabled: 1
-    path: Assets/Scenes/RaaltePuzzle 1.unity
+    path: Assets/Scenes/RaaltePuzzle.unity
     guid: 5ad8ec893fd12854f8a50165fac68181
   m_configObjects: {}

@@ -1,0 +1,60 @@
+Overview of choices 
+ 
+Round: 0 
+Choice made: Build a Road for Construction Traffic 
+Hint: - 
+ 
+Round: 1 
+Choice made: Build the northern and middle part of the Bicycle Tunnel Ramp 
+Hint: - 
+ 
+Round: 2 
+Choice made: Build the Southern part of the Bicycle Tunnel 
+Hint: There's no space to build this part, wait until the middle part is put in place! 
+ 
+Round: 3 
+Choice made: Build the new Bus Station 
+Hint: - 
+ 
+Round: 4 
+Choice made: Detach the track from the Switches 
+Hint: The Station has not been decomissioned yet! 
+ 
+Round: 5 
+Choice made: Remove the old tracks 
+Hint: You can't remove the tracks while they're still attached to the switches! 
+ 
+Round: 6 
+Choice made: Construct the new road south of the station 
+Hint: You should prioritize the station itself while it's decomissioned! 
+ 
+Round: 7 
+Choice made: Deconstruct the Old Car Park 
+Hint: You should prioritize the station itself while it's decomissioned! 
+ 
+Round: 8 
+Choice made: Put the new tracks in place, and reconnect them to the switches 
+Hint: - 
+ 
+Round: 9 
+Choice made: Build the Nothern Bicycle Park and Bike Lane 
+Hint: - 
+ 
+Round: 10 
+Choice made: Construct the Southern part of the Bicycle Tunnel 
+Hint: - 
+ 
+Round: 11 
+Choice made: Build the new road on the side of the new Car Park 
+Hint: The Car Park hasn't been built yet! 
+ 
+Round: 12 
+Choice made: Deconstruct the old bicycle park, busstation and car park 
+Hint: - 
+ 
+Round: 13 
+Choice made: Deconstruct the snack bar 
+Hint: SNACK BAR FOREVER 
+ 
+Your final score is: 7 
+Your rank is: Raalte Rookie
