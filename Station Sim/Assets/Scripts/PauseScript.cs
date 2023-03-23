@@ -23,7 +23,6 @@ public class PauseScript : MonoBehaviour
         }
     }
 
-
     public void Pause()
     {
         _gamePaused = !_gamePaused;
@@ -40,6 +39,8 @@ public class PauseScript : MonoBehaviour
         }
     }
 
+    //Called by clicking on the Exit button (top right of screen)
+    //Called by clicking on Quit in the main menu
     public void ExitGame()
     {
         Application.Quit();

@@ -5,7 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class StartScript : MonoBehaviour
 {
-    public Animator transition;
+    public Animator Transition;
+
     public void StartGame()
     {
         StartCoroutine(LoadLevel());
@@ -13,8 +14,16 @@ public class StartScript : MonoBehaviour
 
     public IEnumerator LoadLevel()
     {
-        transition.SetTrigger("Start");
+        Transition.SetTrigger("Start");
         yield return new WaitForSeconds(1);
         SceneManager.LoadScene(1);
     }
+
+    public IEnumerator EndGame()
+    {
+        Transition.SetTrigger("Start");
+        yield return new WaitForSeconds(2);
+        Transition.SetTrigger("End");
+    }
+
 }

@@ -34,7 +34,7 @@ public class UIManager : MonoBehaviour
         _borderActive = false;
     }
 
-
+    //Called by clicking on the "Controls" button (bottom left of screen)
     public void ToggleControlsPanel()
     {
         _controlPanelActive = !_controlPanelActive;
@@ -91,13 +91,13 @@ public class UIManager : MonoBehaviour
         EndScreen.SetActive(true);
     }
 
-    //This function is attached to the Reset Button in the EndScreen Panel
+    //Called by the Reset Button in the EndScreen Panel
     public void ResetGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    //This function is attached to the Menu Button in the EndScreen Panel
+    //Called by the Menu Button in the EndScreen Panel
     public void ReturnToMenu()
     {
         SceneManager.LoadScene(0);

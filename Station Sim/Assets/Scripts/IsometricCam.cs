@@ -85,6 +85,7 @@ public class IsometricCam : MonoBehaviour
     public void ZoomToRaalte()
     {
         _gameDone = true;
+        transform.position = _endPos;
         Trans = _endPos;
         transform.rotation = Quaternion.Euler(-13, -115, 0);
         Camera.main.orthographicSize = 80;

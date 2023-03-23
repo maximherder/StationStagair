@@ -16,6 +16,7 @@ public class GameStateManager : MonoBehaviour
     public GameObject ScoreManager;
     public GameObject PreviewObject;
     public GameObject LogText;
+    public GameObject Transition;
 
     [SerializeField]
     private GameObject Roads;
@@ -26,7 +27,7 @@ public class GameStateManager : MonoBehaviour
     private bool _wrongWasSelected = false;
 
     /// <summary>
-    /// Called by "BuildButton"
+    /// Called by clicking on the "Build" button
     /// </summary>
     public void StartRound()
     {
@@ -36,7 +37,7 @@ public class GameStateManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Called by Choice Panels
+    /// Called by clicking on the Choice Panels
     /// </summary>
     /// <param name="choice">This value keeps track of which Choice Panel was selected</param>
     public void CheckAnswer(int choice)
@@ -144,6 +145,10 @@ public class GameStateManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Called by Hover Enter event on the Choice Buttons
+    /// </summary>
+    /// <param name="choice">This value keeps track of which Choice Panel was selected</param>
     public void ShowPreview(int choice)
     {
         if (choice == 0)
@@ -158,6 +163,10 @@ public class GameStateManager : MonoBehaviour
             PreviewObject.SetActive(true);
     }
 
+    /// <summary>
+    /// Called by the Hover Exit event on the Choice Buttons
+    /// </summary>
+    /// <param name="choice">This value keeps track of which Choice Panel was selected</param>
     public void HidePreview(int choice)
     {
         if (choice == 0)
@@ -174,9 +183,11 @@ public class GameStateManager : MonoBehaviour
 
     private IEnumerator Ending()
     {
-        yield return new WaitForSeconds(5);
-        UIManager.GetComponent<UIManager>().DisplayEndResults();
+        yield return new WaitForSeconds(4);
+        StartCoroutine(Transition.GetComponent<StartScript>().EndGame());
+        yield return new WaitForSeconds(1);
         Cam.GetComponent<IsometricCam>().ZoomToRaalte();
+        UIManager.GetComponent<UIManager>().DisplayEndResults();
     }
 
 }
