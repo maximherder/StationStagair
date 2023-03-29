@@ -15,6 +15,7 @@ public class GameStateManager : MonoBehaviour
     public GameObject Train;
     public GameObject ScoreManager;
     public GameObject PreviewObject;
+    public GameObject DeconstructObject;
     public GameObject LogText;
     public GameObject Transition;
 
@@ -111,6 +112,8 @@ public class GameStateManager : MonoBehaviour
 
         if (PreviewObject != null)
             PreviewObject.SetActive(false);
+        if (DeconstructObject != null)
+            DeconstructObject.GetComponent<Outline>().enabled = false;
 
         UIManager.GetComponent<UIManager>().ToggleChoicePanel();
         FindObjectOfType<TotalProgressBar>().UpdateProgress();
@@ -154,13 +157,31 @@ public class GameStateManager : MonoBehaviour
         if (choice == 0)
         {
             PreviewObject = Rounds[_index].Choice1.PreviewPiece;
+            DeconstructObject = Rounds[_index].Choice1.ToDeconstruct;
         }
         if (choice == 1)
         {
             PreviewObject = Rounds[_index].Choice2.PreviewPiece;
+            DeconstructObject = Rounds[_index].Choice2.ToDeconstruct;
         }
+
+
         if (PreviewObject != null)
+        {
             PreviewObject.SetActive(true);
+            Cam.GetComponent<IsometricCam>().Trans = PreviewObject.transform.position;
+        }
+
+        if (DeconstructObject != null)
+        {
+            if (DeconstructObject.GetComponent<Outline>() == null)
+            {
+                var outline = DeconstructObject.AddComponent<Outline>();
+                outline.OutlineMode = Outline.Mode.OutlineAll;
+            }
+            DeconstructObject.GetComponent<Outline>().enabled = true;
+            Cam.GetComponent<IsometricCam>().Trans = DeconstructObject.transform.position;
+        }
     }
 
     /// <summary>
@@ -172,13 +193,24 @@ public class GameStateManager : MonoBehaviour
         if (choice == 0)
         {
             PreviewObject = Rounds[_index].Choice1.PreviewPiece;
+            DeconstructObject = Rounds[_index].Choice1.ToDeconstruct;
         }
         if (choice == 1)
         {
             PreviewObject = Rounds[_index].Choice2.PreviewPiece;
+            DeconstructObject = Rounds[_index].Choice2.ToDeconstruct;
         }
+
         if (PreviewObject != null)
+        {
             PreviewObject.SetActive(false);
+        }
+
+        if (DeconstructObject != null)
+        {
+            if (DeconstructObject.GetComponent<Outline>() != null)
+                DeconstructObject.GetComponent<Outline>().enabled = false;
+        }
     }
 
     private IEnumerator Ending()

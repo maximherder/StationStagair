@@ -55,7 +55,7 @@ public class PieceConstructionManager : MonoBehaviour
     {
         _lerpScript.Move = true;
         Cam.GetComponent<IsometricCam>().Trans = PuzzlePiece.transform.position + _camOffset;
-        GameObject dust = Instantiate(DustCloud, PuzzlePiece.transform.position + new Vector3(0, 0, -15), Quaternion.identity);
+        GameObject dust = Instantiate(DustCloud, PuzzlePiece.transform.position + new Vector3(0, 0, -15), Quaternion.Euler(0, 0, -90));
         _lerpScript.SetDestination(3, false);
 
     }
