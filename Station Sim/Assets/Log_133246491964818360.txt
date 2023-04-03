@@ -1,0 +1,60 @@
+Overview of choices 
+ 
+Round: 0 
+Choice made: Build a Road for Construction Traffic 
+Hint: - 
+ 
+Round: 1 
+Choice made: Build the northern and middle part of the Bicycle Tunnel Ramp 
+Hint: - 
+ 
+Round: 2 
+Choice made: Build the Transfer areas for passengers to reach the train platform 
+Hint: - 
+ 
+Round: 3 
+Choice made: Build the new Bus Station 
+Hint: - 
+ 
+Round: 4 
+Choice made: Build the Bicycle park south of the tracks 
+Hint: - 
+ 
+Round: 5 
+Choice made: Remove the old tracks 
+Hint: You can't remove the tracks while they're still attached to the switches! 
+ 
+Round: 6 
+Choice made: Remove the old Tracks and Platform 
+Hint: - 
+ 
+Round: 7 
+Choice made: Build the new Station Platforms 
+Hint: - 
+ 
+Round: 8 
+Choice made: Put the new tracks in place, and reconnect them to the switches 
+Hint: - 
+ 
+Round: 9 
+Choice made: Build the Nothern Bicycle Park and Bike Lane 
+Hint: - 
+ 
+Round: 10 
+Choice made: Construct the Southern part of the Bicycle Tunnel 
+Hint: - 
+ 
+Round: 11 
+Choice made: Build the new road south of the Bicycle Tunnel 
+Hint: - 
+ 
+Round: 12 
+Choice made: Deconstruct the old bicycle park, busstation and car park 
+Hint: - 
+ 
+Round: 13 
+Choice made: Build the new Car Park 
+Hint: - 
+ 
+Your final score is: 13 
+Your rank is: Supreme StationBuilder

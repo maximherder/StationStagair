@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class IsometricCam : MonoBehaviour
 {
-    public float CamSpeed;
-    public float ScrollSpeed = 20;
+    public const float ScrollSpeed = 200;
     public Vector3 Trans;
 
     private Vector3 _origin;
@@ -59,9 +58,6 @@ public class IsometricCam : MonoBehaviour
                 transform.position = (originVector - differenceVector) - _startPosition;
                 Trans = transform.position;
             }
-
-            if (Input.GetKeyDown(KeyCode.R))
-                ResetCam();
         }
         else
         {
@@ -76,12 +72,6 @@ public class IsometricCam : MonoBehaviour
         Camera.main.orthographicSize = val;
     }
 
-    void ResetCam()
-    {
-        this.transform.position = new Vector3(0, 0, 0);
-        Camera.main.orthographicSize = _camSize;
-    }
-
     public void ZoomToRaalte()
     {
         _gameDone = true;
@@ -89,5 +79,11 @@ public class IsometricCam : MonoBehaviour
         Trans = _endPos;
         transform.rotation = Quaternion.Euler(-13, -115, 0);
         Camera.main.orthographicSize = 80;
+    }
+
+    public void MoveToAverage(Vector3 point1, Vector3 point2)
+    {
+        Vector3 offset = new Vector3(0, 0, -50);
+        Trans = ((point1 + point2) / 2) + offset;
     }
 }

@@ -1,0 +1,34 @@
+Overview of choices 
+ 
+Round: 0 
+Choice made: Build a Road for Construction Traffic 
+Hint: - 
+ 
+Round: 1 
+Choice made: Build the northern and middle part of the Bicycle Tunnel Ramp 
+Hint: - 
+ 
+Round: 2 
+Choice made: Build the Transfer areas for passengers to reach the train platform 
+Hint: - 
+ 
+Round: 3 
+Choice made: Build the new Bus Station 
+Hint: - 
+ 
+Round: 4 
+Choice made: Detach the track from the Switches 
+Hint: The Station has not been decomissioned yet! 
+ 
+Round: 5 
+Choice made: Detach the track from the Switches 
+Hint: - 
+ 
+Round: 6 
+Choice made: Remove the old Tracks and Platform 
+Hint: - 
+ 
+Round: 7 
+Choice made: Build the new Station Platforms 
+Hint: - 
+ 

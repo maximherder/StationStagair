@@ -14,13 +14,11 @@ public class GameStateManager : MonoBehaviour
     public GameObject Cam;
     public GameObject Train;
     public GameObject ScoreManager;
-    public GameObject PreviewObject;
-    public GameObject DeconstructObject;
     public GameObject LogText;
     public GameObject Transition;
 
     [SerializeField]
-    private GameObject Roads;
+    private readonly GameObject Roads;
     private int _index = 0;
     private int _score;
     private int _timeCount;
@@ -32,6 +30,8 @@ public class GameStateManager : MonoBehaviour
     /// </summary>
     public void StartRound()
     {
+        GetChoiceVectorAverage();
+
         UIManager.GetComponent<UIManager>().UpdateChoicePanels(Rounds[_index].Choice1.ChoiceTitle, Rounds[_index].Choice2.ChoiceTitle);
         UIManager.GetComponent<UIManager>().ToggleChoicePanel();
         FindObjectOfType<AudioManager>().Play("ButtonClick");
@@ -72,6 +72,7 @@ public class GameStateManager : MonoBehaviour
 
             }
         }
+
         else if (choice == 1)
         {
             if (Rounds[_index].Choice2.Correct)
@@ -110,10 +111,8 @@ public class GameStateManager : MonoBehaviour
         _firstGuess = true;
         _wrongWasSelected = false;
 
-        if (PreviewObject != null)
-            PreviewObject.SetActive(false);
-        if (DeconstructObject != null)
-            DeconstructObject.GetComponent<Outline>().enabled = false;
+        HidePreview(0);
+        HidePreview(1);
 
         UIManager.GetComponent<UIManager>().ToggleChoicePanel();
         FindObjectOfType<TotalProgressBar>().UpdateProgress();
@@ -122,10 +121,6 @@ public class GameStateManager : MonoBehaviour
             _index++;
         else
         {
-            Roads.SetActive(true);
-            PopupManager.GetComponent<PopupScript>().BuildButton.SetActive(false);
-            FindObjectOfType<AudioManager>().Play("GameComplete");
-            ScoreManager.GetComponent<ScoreManager>().DetermineRank();
             StartCoroutine(Ending());
         }
     }
@@ -156,31 +151,31 @@ public class GameStateManager : MonoBehaviour
     {
         if (choice == 0)
         {
-            PreviewObject = Rounds[_index].Choice1.PreviewPiece;
-            DeconstructObject = Rounds[_index].Choice1.ToDeconstruct;
+            if (Rounds[_index].Choice1.PreviewPiece != null)
+                Rounds[_index].Choice1.PreviewPiece.SetActive(true);
+            else
+            {
+                if (Rounds[_index].Choice1.ToDeconstruct.GetComponent<Outline>() == null)
+                {
+                    var outline = Rounds[_index].Choice1.ToDeconstruct.AddComponent<Outline>();
+                    outline.OutlineMode = Outline.Mode.OutlineAll;
+                }
+                Rounds[_index].Choice1.ToDeconstruct.GetComponent<Outline>().enabled = true;
+            }
         }
         if (choice == 1)
         {
-            PreviewObject = Rounds[_index].Choice2.PreviewPiece;
-            DeconstructObject = Rounds[_index].Choice2.ToDeconstruct;
-        }
-
-
-        if (PreviewObject != null)
-        {
-            PreviewObject.SetActive(true);
-            Cam.GetComponent<IsometricCam>().Trans = PreviewObject.transform.position;
-        }
-
-        if (DeconstructObject != null)
-        {
-            if (DeconstructObject.GetComponent<Outline>() == null)
+            if (Rounds[_index].Choice2.PreviewPiece != null)
+                Rounds[_index].Choice2.PreviewPiece.SetActive(true);
+            else
             {
-                var outline = DeconstructObject.AddComponent<Outline>();
-                outline.OutlineMode = Outline.Mode.OutlineAll;
+                if (Rounds[_index].Choice2.ToDeconstruct.GetComponent<Outline>() == null)
+                {
+                    var outline = Rounds[_index].Choice2.ToDeconstruct.AddComponent<Outline>();
+                    outline.OutlineMode = Outline.Mode.OutlineAll;
+                }
+                Rounds[_index].Choice2.ToDeconstruct.GetComponent<Outline>().enabled = true;
             }
-            DeconstructObject.GetComponent<Outline>().enabled = true;
-            Cam.GetComponent<IsometricCam>().Trans = DeconstructObject.transform.position;
         }
     }
 
@@ -192,31 +187,52 @@ public class GameStateManager : MonoBehaviour
     {
         if (choice == 0)
         {
-            PreviewObject = Rounds[_index].Choice1.PreviewPiece;
-            DeconstructObject = Rounds[_index].Choice1.ToDeconstruct;
+            if (Rounds[_index].Choice1.PreviewPiece != null)
+                Rounds[_index].Choice1.PreviewPiece.SetActive(false);
+            else
+            {
+                if (Rounds[_index].Choice1.ToDeconstruct.GetComponent<Outline>() != null)
+                    Rounds[_index].Choice1.ToDeconstruct.GetComponent<Outline>().enabled = false;
+            }
         }
         if (choice == 1)
         {
-            PreviewObject = Rounds[_index].Choice2.PreviewPiece;
-            DeconstructObject = Rounds[_index].Choice2.ToDeconstruct;
+            if (Rounds[_index].Choice2.PreviewPiece != null)
+                Rounds[_index].Choice2.PreviewPiece.SetActive(false);
+            else
+            {
+                if (Rounds[_index].Choice2.ToDeconstruct.GetComponent<Outline>() != null)
+                    Rounds[_index].Choice2.ToDeconstruct.GetComponent<Outline>().enabled = false;
+            }
         }
+    }
 
-        if (PreviewObject != null)
-        {
-            PreviewObject.SetActive(false);
-        }
+    private void GetChoiceVectorAverage()
+    {
+        Vector3 Vector1 = new Vector3();
+        Vector3 Vector2 = new Vector3();
+        if (Rounds[_index].Choice1.PreviewPiece != null)
+            Vector1 = Rounds[_index].Choice1.PreviewPiece.transform.position;
+        else
+            Vector1 = Rounds[_index].Choice1.ToDeconstruct.transform.position;
 
-        if (DeconstructObject != null)
-        {
-            if (DeconstructObject.GetComponent<Outline>() != null)
-                DeconstructObject.GetComponent<Outline>().enabled = false;
-        }
+        if (Rounds[_index].Choice2.PreviewPiece != null)
+            Vector2 = Rounds[_index].Choice2.PreviewPiece.transform.position;
+        else
+            Vector2 = Rounds[_index].Choice2.ToDeconstruct.transform.position;
+        Cam.GetComponent<IsometricCam>().MoveToAverage(Vector1, Vector2);
     }
 
     private IEnumerator Ending()
     {
+        Roads.SetActive(true);
+        PopupManager.GetComponent<PopupScript>().BuildButton.SetActive(false);
+        FindObjectOfType<AudioManager>().Play("GameComplete");
+        ScoreManager.GetComponent<ScoreManager>().DetermineRank();
+
         yield return new WaitForSeconds(4);
         StartCoroutine(Transition.GetComponent<StartScript>().EndGame());
+
         yield return new WaitForSeconds(1);
         Cam.GetComponent<IsometricCam>().ZoomToRaalte();
         UIManager.GetComponent<UIManager>().DisplayEndResults();
